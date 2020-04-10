@@ -1,0 +1,21 @@
+# IDE Settings
+
+.idea
+*.iml
+.settings
+.classpath
+.project
+*.ftprj
+
+# Maven Temporary
+
+**/target
+
+# Node & WebPack Temporary
+
+**/node
+**/node_modules
+package-lock.json
+*.js.map
+
+# Project Excludes

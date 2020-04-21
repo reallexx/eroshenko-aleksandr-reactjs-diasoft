@@ -1,4 +1,4 @@
-const sum = require('./sum');
+/*const sum= require('./sum');
 
 test('sum(1)(2)(3) = 6', () => {
 	expect(sum(1)(2)(3)*1).toBe(6);
@@ -56,4 +56,26 @@ test('sum2() = 0', () => {
 
 test('sum2()() = 0', () => {
   expect(sum2()()*1).toBe(0);
+});*/
+
+const sum3 = require('./sum');
+
+test('sum3() = undefined', () => {
+  expect(sum3()).toBe(undefined);
+});
+
+test('sum3(1)(2)(3)() = 6', () => {
+  expect(sum3(1)(2)(3)()).toBe(6);
+});
+
+test('typeof sum3(1)(2)(3)() = "number"', () => {
+  expect(typeof sum3(1)(2)(3)()).toBe("number");
+});
+
+test('typeof sum3(1)(2)(3) = "function"', () => {
+  expect(typeof sum3(1)(2)(3)).toBe("function");
+});
+
+test('sum3(1)(2)(3)(-5)() = 1', () => {
+  expect(sum3(1)(2)(3)(-5)()).toBe(1);
 });

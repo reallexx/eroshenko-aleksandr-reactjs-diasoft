@@ -10,8 +10,8 @@ getPath — поиск уникального селектора<br>
 `document.querySelectorAll()`, вызванный с этим селектором, не должен находить никаких элементов, кроме исходного.<br>
 
 ```javascript<br>
-$0 // HTMLElement<br>
-getPath($0) // => "..."<br>
+$0 // HTMLElement
+getPath($0) // => "..."
 ```
 
 # How to

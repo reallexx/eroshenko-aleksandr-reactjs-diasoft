@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="center">
+        <form action="#">
+            <fieldset id="fields">
+                <legend>Вход</legend>
+                <p><input type="text" id="login" autocomplete="on" maxlength="20" placeholder="Логин*"></p>
+                <label for="login" id="login1">Это обязательное поле</label>
+                <p><input type="password" id="password" maxlength="10" placeholder="Пароль*"></p>
+                <label for="password" id="password1">Это обязательное поле</label>
+
+                <p><input class="button" type="button" id="submit" value="Войти"></p>
+            </fieldset>
+            <div class="center spinner" id="spinner"> <div class="lds-ring"><div></div><div></div><div></div><div></div></div> </div>
+        </form>
+    </div>
+</body>
+<link rel="stylesheet" href="login.css" />
+<script src="login.js" defer></script>
+</html>

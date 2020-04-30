@@ -1,4 +1,5 @@
 import React from "react"
+import {Checkbox} from 'primereact/checkbox';
 
 function TodoItem(props: any) {
     const doneStyle = {
@@ -9,8 +10,7 @@ function TodoItem(props: any) {
 
     return (
         <div className="todo-item">
-            <input
-                type="checkbox"
+            <Checkbox className="check-box"
                 checked={props.item.done}
                 onChange={() => props.handleChange(props.item.id)}
             />

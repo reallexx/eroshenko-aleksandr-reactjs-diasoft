@@ -1,4 +1,6 @@
 import React from "react"
+import {InputText} from 'primereact/inputtext';
+import {Button} from 'primereact/button';
 
 interface NewTodoInterface {
     handleAdd: (string: string) => void
@@ -9,11 +11,10 @@ function NewTodo(props: NewTodoInterface) {
     const getTodoText = (elem: HTMLInputElement | null) => elem ? elem.value : ""
     const clearForm = (form: HTMLFormElement | null) => form && form.reset()
     return (
-        <form id="form">
-            <div className="todo">
-                <input className="todo-text"
+        <form id="form" action="#">
+            <div className="todo-list todo">
+                <InputText
                     id="todo"
-                    type="text"
                     placeholder="Новое дело"
                     defaultValue=""
                     onFocus={() => {
@@ -22,9 +23,8 @@ function NewTodo(props: NewTodoInterface) {
                     }}
                 />
                 <p>
-                    <input
-                        type="button"
-                        value="Добавить"
+                    <Button
+                        label="Добавить"
                         onClick={() => {
                             const todo = document.querySelector("#todo") as HTMLInputElement
                             if (checkTodoText(todo)) {
@@ -34,7 +34,6 @@ function NewTodo(props: NewTodoInterface) {
                                 clearForm(form)
                             } else {
                                 todo.style.borderColor = 'red'
-                                //todo.style.backgroundColor = 'mistyrose'
                             }
                         }}
                     />

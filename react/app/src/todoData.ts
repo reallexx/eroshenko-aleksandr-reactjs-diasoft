@@ -1,4 +1,4 @@
-const todoData = [
+export const todoData = [
     {
         id: 1,
         caption: "Поесть",
@@ -21,5 +21,3 @@ const todoData = [
         done: false
     }
 ]
-
-export default todoData

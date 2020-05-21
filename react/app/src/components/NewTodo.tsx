@@ -1,47 +1,46 @@
-import React from "react"
+import React, {FC, useState} from 'react';
+import {InputText} from 'primereact/inputtext';
+import {Button} from 'primereact/button';
 
-interface NewTodoInterface {
-    handleAdd: (string: string) => void
+interface IHandlers {
+  handleAdd: (text: string) => void
 }
 
-function NewTodo(props: NewTodoInterface) {
-    const checkTodoText = (elem: HTMLInputElement | null) => !!(elem && elem.value)
-    const getTodoText = (elem: HTMLInputElement | null) => elem ? elem.value : ""
-    const clearForm = (form: HTMLFormElement | null) => form && form.reset()
-    return (
-        <form id="form">
-            <div className="todo">
-                <input className="todo-text"
-                    id="todo"
-                    type="text"
-                    placeholder="Новое дело"
-                    defaultValue=""
-                    onFocus={() => {
-                        const todo = document.querySelector("#todo") as HTMLInputElement
-                        todo.style.borderColor = 'initial'
-                    }}
-                />
-                <p>
-                    <input
-                        type="button"
-                        value="Добавить"
-                        onClick={() => {
-                            const todo = document.querySelector("#todo") as HTMLInputElement
-                            if (checkTodoText(todo)) {
-                                const todoText = getTodoText(todo)
-                                props.handleAdd(todoText)
-                                const form = document.querySelector("#form") as HTMLFormElement
-                                clearForm(form)
-                            } else {
-                                todo.style.borderColor = 'red'
-                                //todo.style.backgroundColor = 'mistyrose'
-                            }
-                        }}
-                    />
-                </p>
-            </div>
-        </form>
-    )
-}
+export const NewTodo: FC<IHandlers> = ({handleAdd}) => {
+  const [text, setText] = useState('');
+  const [borderColor, setBorderColor] = useState('initial');
+  const inputStyle = {borderColor: borderColor};
 
-export default NewTodo
+  return (
+    <form id="form" action="#">
+      <div className="todo-list todo">
+          <InputText
+            style={inputStyle}
+            id="todo"
+            placeholder="Новое дело"
+            defaultValue=""
+            onFocus={() => {
+              setBorderColor('initial');
+            }}
+            onChange={(event) => {
+              setText(event.currentTarget.value);
+            }}
+          />
+        <p>
+          <Button
+            label="Добавить"
+            onClick={(event) => {
+              if (text) {
+                handleAdd(text)
+                setText("");
+              } else {
+                setBorderColor('red');
+              }
+            }}
+            type="reset"
+          />
+        </p>
+      </div>
+    </form>
+  )
+}

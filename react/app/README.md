@@ -9,7 +9,7 @@
 
 # How to
 
-Модуль 7 + PrimeReact (CheckBox, InputText, Button)
+Правки по замечаниям модуля 7 + PrimeReact (CheckBox, InputText, Button)
 
 Для запуска в директории react/app сначала выполнить nmp i<br>
 Затем после установки пакетов выполнить npm start

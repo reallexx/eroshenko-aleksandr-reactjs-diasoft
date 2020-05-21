@@ -1,22 +1,32 @@
-import React from "react"
+import React, {FC} from 'react';
 import {Checkbox} from 'primereact/checkbox';
 
-function TodoItem(props: any) {
-    const doneStyle = {
-        fontStyle: "italic",
-        color: "#cdcdcd",
-        textDecoration: "line-through"
-    }
+const doneStyle = {
+  fontStyle: 'italic',
+  color: '#cdcdcd',
+  textDecoration: 'line-through',
+};
 
-    return (
-        <div className="todo-item">
-            <Checkbox className="check-box"
-                checked={props.item.done}
-                onChange={() => props.handleChange(props.item.id)}
-            />
-            <p style={props.item.done ? doneStyle : undefined}>{props.item.caption}</p>
-        </div>
-    )
+interface IProps {
+  key: number,
+  item: {id: number, caption: string, done: boolean}
 }
 
-export default TodoItem
+interface IHandlers {
+  handleChange: (id: number) => void
+}
+
+export const TodoItem: FC<IProps & IHandlers> = (props) => {
+  const {item, handleChange} = props;
+  const {done, id, caption} = item;
+
+  return (
+    <div className="todo-item">
+      <Checkbox className="check-box"
+                checked={done}
+                onChange={() => handleChange(id)}
+      />
+      <p style={done ? doneStyle : undefined}>{caption}</p>
+    </div>
+  );
+}

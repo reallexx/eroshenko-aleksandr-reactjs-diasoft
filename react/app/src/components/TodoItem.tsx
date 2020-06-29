@@ -8,12 +8,12 @@ const doneStyle = {
 };
 
 interface IProps {
-  key: number,
-  item: {id: number, caption: string, done: boolean}
+  key: number;
+  item: {id: number; caption: string; done: boolean};
 }
 
 interface IHandlers {
-  handleChange: (id: number) => void
+  handleChange: (id: number) => void;
 }
 
 export const TodoItem: FC<IProps & IHandlers> = (props) => {
@@ -22,11 +22,8 @@ export const TodoItem: FC<IProps & IHandlers> = (props) => {
 
   return (
     <div className="todo-item">
-      <Checkbox className="check-box"
-                checked={done}
-                onChange={() => handleChange(id)}
-      />
+      <Checkbox className="check-box" checked={done} onChange={() => handleChange(id)} />
       <p style={done ? doneStyle : undefined}>{caption}</p>
     </div>
   );
-}
+};

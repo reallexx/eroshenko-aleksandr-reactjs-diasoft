@@ -27,9 +27,12 @@ export const Header: FC = () => {
   return (
     <div>
       <header className="navbar">
-        <span>{/*{appName}*/}{`${appName}`} says</span>
+        <span>
+          {/*{appName}*/}
+          {`${appName}`} says
+        </span>
         <span style={styles}>Good {timeOfDay}!</span>
       </header>
     </div>
   );
-}
+};

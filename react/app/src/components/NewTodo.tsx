@@ -3,7 +3,7 @@ import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 
 interface IHandlers {
-  handleAdd: (text: string) => void
+  handleAdd: (text: string) => void;
 }
 
 export const NewTodo: FC<IHandlers> = ({handleAdd}) => {
@@ -14,25 +14,25 @@ export const NewTodo: FC<IHandlers> = ({handleAdd}) => {
   return (
     <form id="form" action="#">
       <div className="todo-list todo">
-          <InputText
-            style={inputStyle}
-            id="todo"
-            placeholder="Новое дело"
-            defaultValue=""
-            onFocus={() => {
-              setBorderColor('initial');
-            }}
-            onChange={(event) => {
-              setText(event.currentTarget.value);
-            }}
-          />
+        <InputText
+          style={inputStyle}
+          id="todo"
+          placeholder="Новое дело"
+          defaultValue=""
+          onFocus={() => {
+            setBorderColor('initial');
+          }}
+          onChange={(event) => {
+            setText(event.currentTarget.value);
+          }}
+        />
         <p>
           <Button
             label="Добавить"
             onClick={(event) => {
               if (text) {
-                handleAdd(text)
-                setText("");
+                handleAdd(text);
+                setText('');
               } else {
                 setBorderColor('red');
               }
@@ -42,5 +42,5 @@ export const NewTodo: FC<IHandlers> = ({handleAdd}) => {
         </p>
       </div>
     </form>
-  )
-}
+  );
+};

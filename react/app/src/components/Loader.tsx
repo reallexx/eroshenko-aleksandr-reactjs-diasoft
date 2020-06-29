@@ -6,4 +6,4 @@ export const Loader: FC = () => {
       <h3>Loading...</h3> :
     </div>
   );
-}
+};

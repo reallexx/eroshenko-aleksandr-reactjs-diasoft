@@ -10,9 +10,9 @@ import {NewTodo} from './components/NewTodo';
 import {todoData} from './todoData';
 
 type AppState = {
-  todos: {id: number, caption: string, done: boolean}[],
-  isLoading: boolean,
-}
+  todos: {id: number; caption: string; done: boolean}[];
+  isLoading: boolean;
+};
 
 export class App extends Component<{}, AppState> {
   constructor(props: any) {
@@ -36,20 +36,22 @@ export class App extends Component<{}, AppState> {
 
   handleChange(id: number) {
     this.setState({
-      todos: this.state.todos.map(item => {
+      todos: this.state.todos.map((item) => {
         return item.id === id ? {...item, done: !item.done} : item;
       }),
     });
   }
 
   handleAdd(text: string) {
-    const newTodo = [{
-      id: Math.random(),
-      caption: text,
-      done: false,
-    }];
+    const newTodo = [
+      {
+        id: Math.random(),
+        caption: text,
+        done: false,
+      },
+    ];
     this.setState({
-      todos: this.state.todos.concat(newTodo)
+      todos: this.state.todos.concat(newTodo),
     });
   }
 
@@ -59,18 +61,20 @@ export class App extends Component<{}, AppState> {
 
     return (
       <div>
-        <Header/>
+        <Header />
         <div>
-          {
-            this.state.isLoading ?
-              <Loader/> :
-              <div>
-                <div className="todo-list">
-                  {todos.map(item => <TodoItem key={item.id} item={item} handleChange={this.handleChange} />)}
-                </div>
-                <NewTodo handleAdd={this.handleAdd}/>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <div>
+              <div className="todo-list">
+                {todos.map((item) => (
+                  <TodoItem key={item.id} item={item} handleChange={this.handleChange} />
+                ))}
               </div>
-          }
+              <NewTodo handleAdd={this.handleAdd} />
+            </div>
+          )}
         </div>
       </div>
     );

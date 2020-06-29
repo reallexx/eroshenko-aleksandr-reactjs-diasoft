@@ -1,82 +1,41 @@
-import React, {Component} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 
 import {TodoItem} from './TodoItem';
-import {NewTodo} from './NewTodo';
+import NewTodo from './NewTodo';
 
-import {todoData} from '../todoData';
+import {ITodo} from '../types/types';
+
+interface IProps {
+  todos: ITodo[]
+}
 
 interface IHandlers {
-  load?: (key: string) => string
-  save?: (key: string, data: string) => void
-  remove?: (key: string) => void
+  toggleTodo: (id: number) => void,
+  removeTodo: (id: number) => void,
+  load: (key: string, loadStorage: (key: string) => string) => string,
+  save: (key: string, data: ITodo[], saveFn: (key: string, data: string) => void) => void,
+  remove: (key: string, removeFn: (key: string) => void) => void,
+  loadStorage: (key: string) => string,
+  saveStorage: (key: string, data: string) => void,
+  removeStorage: (key: string) => void,
 }
 
-interface IState {
-  data: {id: number, caption: string, done: boolean}[]
-}
+export const TodoList: FC<IProps & IHandlers> = ({todos, toggleTodo, removeTodo, load, save, remove, loadStorage, saveStorage, removeStorage}) => {
 
-export class TodoList extends Component<IHandlers,IState> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      data: [],
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
+  if (!todos.length && loadStorage) {
+    load('todos', loadStorage);
   }
 
-  handleChange(id: number) {
-    this.setState({
-      data: this.state.data.map(item => {
-        return item.id === id ? {...item, done: !item.done} : item;
-      }),
-    });
+  if (todos.length && saveStorage) {
+    save('todos', todos, saveStorage);
   }
 
-  handleAdd(text: string) {
-    const newTodo = [{
-      id: Math.random(),
-      caption: text,
-      done: false,
-    }];
-    this.setState({
-      data: this.state.data.concat(newTodo),
-    });
-  }
-
-  componentDidMount() {
-    try {
-      const todos = this.props.load && JSON.parse(this.props.load('todos'));
-      if (todos && Array.isArray(todos)) {
-        this.setState({
-          data: todos,
-        });
-      }
-    } catch (e) {
-      this.setState({
-        data: todoData,
-      });
-    }
-  }
-
-  componentDidUpdate() {
-    try {
-      this.props.save && this.props.save('todos', JSON.stringify(this.state.data));
-    } catch (e) {
-    }
-  }
-
-  render() {
-    const {state} = this;
-    const {data} = state;
-
-    return (
-      <div>
-        <div className="todo-list">
-          {data.map(item => <TodoItem key={item.id} item={item} handleChange={this.handleChange}/>)}
-        </div>
-        <NewTodo handleAdd={this.handleAdd}/>
+  return (
+    <div>
+      <div className="todo-list">
+        {todos.map(todo => <TodoItem key={todo.id} item={todo} onChange={() => toggleTodo(todo.id)} onDoubleClick={() => removeTodo(todo.id)}/>)}
       </div>
-    );
-  }
+      <NewTodo />
+    </div>
+  );
 }

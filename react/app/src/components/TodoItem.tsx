@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
 import {Checkbox} from 'primereact/checkbox';
 
+import {ITodo} from '../types/types';
+
 const doneStyle = {
   fontStyle: 'italic',
   color: '#cdcdcd',
@@ -8,25 +10,25 @@ const doneStyle = {
 };
 
 interface IProps {
-  key: number,
-  item: {id: number, caption: string, done: boolean}
+  item: ITodo
 }
 
 interface IHandlers {
-  handleChange: (id: number) => void
+  onChange: () => void
+  onDoubleClick: () => void
 }
 
 export const TodoItem: FC<IProps & IHandlers> = (props) => {
-  const {item, handleChange} = props;
-  const {done, id, caption} = item;
+  const {item, onChange, onDoubleClick} = props;
+  const {done, caption} = item;
 
   return (
     <div className="todo-item">
       <Checkbox className="check-box"
                 checked={done}
-                onChange={() => handleChange(id)}
+                onChange={onChange}
       />
-      <p style={done ? doneStyle : undefined}>{caption}</p>
+      <p style={done ? doneStyle : undefined} onDoubleClick={onDoubleClick}>{caption}</p>
     </div>
   );
 }

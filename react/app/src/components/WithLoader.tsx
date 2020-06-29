@@ -1,30 +1,36 @@
-import React, {Component, ComponentType} from 'react';
+import React, {FC} from 'react';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 
 import {Loader} from './Loader';
+import {setIsLoading} from '../actions/actions';
 
-interface IState {
+interface IProps {
   isLoading: boolean,
 }
 
-export const withLoader = <P extends object>(WrappedComponent: ComponentType<P>) =>
-  class WithLoader extends Component<P, IState> {
-    constructor(props: any) {
-      super(props);
-      this.state = {
-        isLoading: true,
-      };
-    }
+interface IHandlers {
+  dispatch: (arg0: {type: string}) => boolean
+}
 
-    componentDidMount() {
-      setTimeout(() => {
-        this.setState({
-          isLoading: false,
-        });
-      }, 1000);
-    }
+const withLoader = (WrappedComponent: FC) => {
+  const WithLoader: FC<IProps & IHandlers> = ({isLoading, dispatch}) => {
 
-    render() {
-      const {isLoading} = this.state;
-      return isLoading ? <Loader/> : <WrappedComponent {...this.props as P} />;
-    }
-  }
+    setTimeout(() => {
+      isLoading = dispatch(setIsLoading());
+    }, 1000);
+
+    return isLoading ? <Loader /> : <WrappedComponent />;
+  };
+
+  return WithLoader;
+};
+
+const mapStateToProps = (state: {isLoading: boolean}) => ({
+  isLoading: state.isLoading
+})
+
+export const composedWithLoader = compose(
+  connect(mapStateToProps, null),
+  withLoader
+)

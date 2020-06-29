@@ -1,11 +1,9 @@
-import React from "react"
+import React, {FC} from 'react';
 
-function Loader() {
-    return (
-        <div>
-            <h3 className="loader" >Loading...</h3> :
-        </div>
-    )
-}
-
-export default Loader
+export const Loader: FC = () => {
+  return (
+    <div className="todo-list">
+      <h3>Loading...</h3> :
+    </div>
+  );
+};

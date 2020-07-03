@@ -1,68 +1,54 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC} from 'react';
 
 import {TodoItem} from './TodoItem';
-import {NewTodo} from './NewTodo';
+import NewTodo from './NewTodo';
 
-import {todoData} from '../todoData';
+import {ITodo} from '../types/types';
 
-interface IHandlers {
-  load: (key: string) => string;
-  save: (key: string, data: string) => void;
-  remove: (key: string) => void;
+interface IProps {
+  todos: ITodo[];
 }
 
-export const TodoList: FC<IHandlers> = (props) => {
-  const [data, setData] = useState<{id: number; caption: string; done: boolean}[]>([]);
-  const [init, setInit] = useState<boolean>(false);
-  const {load} = props;
+interface IHandlers {
+  toggleTodo: (id: number) => void;
+  removeTodo: (id: number) => void;
+  load: (key: string, loadStorage: (key: string) => string) => string;
+  save: (key: string, data: ITodo[], saveFn: (key: string, data: string) => void) => void;
+  remove: (key: string, removeFn: (key: string) => void) => void;
+  loadStorage: (key: string) => string;
+  saveStorage: (key: string, data: string) => void;
+}
 
-  const handleChange = (id: number) => {
-    setData(
-      data.map((item) => {
-        return item.id === id ? {...item, done: !item.done} : item;
-      }),
-    );
-  };
+export const TodoList: FC<IProps & IHandlers> = ({
+  todos,
+  toggleTodo,
+  removeTodo,
+  load,
+  save,
+  loadStorage,
+  saveStorage,
+}) => {
+  if (!todos.length && loadStorage) {
+    load('todos', loadStorage);
+  }
 
-  const handleAdd = (text: string) => {
-    const newTodo = [
-      {
-        id: Math.random(),
-        caption: text,
-        done: false,
-      },
-    ];
-    setData(data.concat(newTodo));
-  };
-
-  useEffect(() => {
-    if (!init) {
-      try {
-        const todos = load && JSON.parse(load('todosFC'));
-        if (todos && Array.isArray(todos)) {
-          setData(todos);
-        }
-      } catch (e) {
-        setData(todoData);
-      }
-      setInit(true);
-    }
-  });
-
-  useEffect(() => {
-    try {
-      props.save && props.save('todosFC', JSON.stringify(data));
-    } catch (e) {}
-  }, [data]);
+  if (todos.length && saveStorage) {
+    save('todos', todos, saveStorage);
+  }
 
   return (
     <div>
       <div className="todo-list">
-        {data.map((item) => (
-          <TodoItem key={item.id} item={item} handleChange={handleChange} />
+        {todos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            item={todo}
+            onChange={() => toggleTodo(todo.id)}
+            onDoubleClick={() => removeTodo(todo.id)}
+          />
         ))}
       </div>
-      <NewTodo handleAdd={handleAdd} />
+      <NewTodo />
     </div>
   );
 };

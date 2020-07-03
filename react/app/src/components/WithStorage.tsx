@@ -3,7 +3,6 @@ import React, {FC} from 'react';
 interface IHandlers {
   loadStorage: (key: string) => string;
   saveStorage: (key: string, data: string) => void;
-  removeStorage: (key: string) => void;
 }
 
 export const withStorage = (WrappedComponent: FC<IHandlers>) => {
@@ -34,13 +33,7 @@ export const withStorage = (WrappedComponent: FC<IHandlers>) => {
       }
     };
 
-    const removeStorage = (key: string) => {
-      if (localStorageAvailable) {
-        localStorage.removeItem(key);
-      }
-    };
-
-    return <WrappedComponent {...{loadStorage, saveStorage, removeStorage}} />;
+    return <WrappedComponent {...{loadStorage, saveStorage}} />;
   };
 
   return WithStorage;

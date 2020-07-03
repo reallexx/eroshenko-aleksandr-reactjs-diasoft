@@ -17,7 +17,6 @@ interface IHandlers {
   remove: (key: string, removeFn: (key: string) => void) => void;
   loadStorage: (key: string) => string;
   saveStorage: (key: string, data: string) => void;
-  removeStorage: (key: string) => void;
 }
 
 export const TodoList: FC<IProps & IHandlers> = ({

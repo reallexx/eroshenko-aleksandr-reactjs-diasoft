@@ -26,11 +26,8 @@ export const Header: FC = () => {
 
   return (
     <div>
-      <header className="navbar">
-        <span>
-          {/*{appName}*/}
-          {`${appName}`} says
-        </span>
+      <header className="nav-bar">
+        <span>{`${appName}`} says</span>
         <span style={styles}>Good {timeOfDay}!</span>
       </header>
     </div>

@@ -29,7 +29,7 @@ export const NewTodo: FC<IHandlers> = ({handleAdd}) => {
         <p>
           <Button
             label="Добавить"
-            onClick={(event) => {
+            onClick={() => {
               if (text) {
                 handleAdd(text);
                 setText('');

@@ -1,48 +1,46 @@
-import React, {FC} from 'react';
-import {connect} from 'react-redux';
-import {addTodo} from '../actions/actions';
+import React, {FC, useState} from 'react';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 
-interface IProps {}
-
 interface IHandlers {
-  dispatch: (arg0: any) => void;
+  handleAdd: (text: string) => void;
 }
 
-const NewTodo: FC<IProps & IHandlers> = ({dispatch}) => {
-  let value = '';
+export const NewTodo: FC<IHandlers> = ({handleAdd}) => {
+  const [text, setText] = useState('');
+  const [borderColor, setBorderColor] = useState('initial');
+  const inputStyle = {borderColor: borderColor};
 
   return (
-    <form
-      id="form"
-      onReset={(e) => {
-        if (!value.trim()) {
-          // @ts-ignore
-          e.currentTarget[0].style.borderColor = 'red';
-          return;
-        }
-        dispatch(addTodo(value));
-        value = '';
-      }}>
+    <form id="form" action="#">
       <div className="todo-list todo">
         <InputText
+          style={inputStyle}
           id="todo"
           placeholder="Новое дело"
           defaultValue=""
-          onFocus={(e) => {
-            e.currentTarget.style.borderColor = 'initial';
+          onFocus={() => {
+            setBorderColor('initial');
           }}
-          onChange={(e) => {
-            value = e.currentTarget.value;
+          onChange={(event) => {
+            setText(event.currentTarget.value);
           }}
         />
         <p>
-          <Button label="Добавить" type="reset" />
+          <Button
+            label="Добавить"
+            onClick={() => {
+              if (text) {
+                handleAdd(text);
+                setText('');
+              } else {
+                setBorderColor('red');
+              }
+            }}
+            type="reset"
+          />
         </p>
       </div>
     </form>
   );
 };
-
-export default connect()(NewTodo);

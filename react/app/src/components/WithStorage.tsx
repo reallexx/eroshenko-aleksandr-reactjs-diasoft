@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 
 interface IHandlers {
-  loadStorage: (key: string) => string;
-  saveStorage: (key: string, data: string) => void;
-  removeStorage: (key: string) => void;
+  load: (key: string) => string;
+  save: (key: string, data: string) => void;
+  remove: (key: string) => void;
 }
 
 export const withStorage = (WrappedComponent: FC<IHandlers>) => {
@@ -19,28 +19,28 @@ export const withStorage = (WrappedComponent: FC<IHandlers>) => {
       }
     };
 
-    const localStorageAvailable = checkLocalStorageExists();
+    const [localStorageAvailable] = useState(checkLocalStorageExists());
 
-    const loadStorage = (key: string) => {
+    const load = (key: string) => {
       if (localStorageAvailable) {
         return localStorage.getItem(key) || '';
       }
       return '';
     };
 
-    const saveStorage = (key: string, data: string) => {
+    const save = (key: string, data: string) => {
       if (localStorageAvailable) {
         localStorage.setItem(key, data);
       }
     };
 
-    const removeStorage = (key: string) => {
+    const remove = (key: string) => {
       if (localStorageAvailable) {
         localStorage.removeItem(key);
       }
     };
 
-    return <WrappedComponent {...{loadStorage, saveStorage, removeStorage}} />;
+    return <WrappedComponent {...{load, save, remove}} />;
   };
 
   return WithStorage;

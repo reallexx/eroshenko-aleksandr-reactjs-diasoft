@@ -3,13 +3,18 @@ import React, {FC} from 'react';
 import './App.scss';
 
 import {Header} from './components/Header';
-import {UserTodoList} from './containers/UserTodoList';
+import {TodoList} from './components/TodoList';
+import {withLoader} from './components/WithLoader';
+import {withStorage} from './components/WithStorage';
+
+const TodoListFCWithStorage = withStorage(TodoList);
+const TodoListFCWithStorageAndLoader = withLoader(TodoListFCWithStorage);
 
 export const App: FC = () => {
   return (
     <div>
       <Header />
-      <UserTodoList dispatch={() => false} isLoading />
+      <TodoListFCWithStorageAndLoader />
     </div>
   );
 };

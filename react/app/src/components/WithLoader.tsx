@@ -1,21 +1,32 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, {FC} from 'react';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 
 import {Loader} from './Loader';
+import {setIsLoading} from '../actions/actions';
 
-export const withLoader = (WrappedComponent: FC) => {
-  const WithLoader: FC = () => {
-    const [isLoading, setIsLoading] = useState(true);
+interface IProps {
+  isLoading: boolean;
+}
 
-    useEffect(() => {
-      if (isLoading) {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000);
-      }
-    });
+interface IHandlers {
+  dispatch: (arg0: {type: string}) => boolean;
+}
+
+const withLoader = (WrappedComponent: FC) => {
+  const WithLoader: FC<IProps & IHandlers> = ({isLoading, dispatch}) => {
+    setTimeout(() => {
+      isLoading = dispatch(setIsLoading());
+    }, 1000);
 
     return isLoading ? <Loader /> : <WrappedComponent />;
   };
 
   return WithLoader;
 };
+
+const mapStateToProps = (state: {isLoading: boolean}) => ({
+  isLoading: state.isLoading,
+});
+
+export const composedWithLoader = compose(connect(mapStateToProps, null), withLoader);

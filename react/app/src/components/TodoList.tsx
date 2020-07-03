@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 
 import {TodoItem} from './TodoItem';
 import NewTodo from './NewTodo';
@@ -26,8 +26,10 @@ export const TodoList: FC<IProps & IHandlers> = ({
   removeTodo,
   load,
   save,
+  remove,
   loadStorage,
   saveStorage,
+  removeStorage,
 }) => {
   if (!todos.length && loadStorage) {
     load('todos', loadStorage);

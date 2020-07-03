@@ -14,6 +14,7 @@ interface IHandlers {
 export const TodoList: FC<IHandlers> = (props) => {
   const [data, setData] = useState<{id: number; caption: string; done: boolean}[]>([]);
   const [init, setInit] = useState<boolean>(false);
+  const {load} = props;
 
   const handleChange = (id: number) => {
     setData(
@@ -37,7 +38,7 @@ export const TodoList: FC<IHandlers> = (props) => {
   useEffect(() => {
     if (!init) {
       try {
-        const todos = props.load && JSON.parse(props.load('todosFC'));
+        const todos = load && JSON.parse(load('todosFC'));
         if (todos && Array.isArray(todos)) {
           setData(todos);
         }

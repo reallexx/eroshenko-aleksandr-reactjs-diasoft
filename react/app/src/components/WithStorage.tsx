@@ -1,46 +1,39 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
+
+const checkLocalStorageExists = () => {
+  const testKey = 'test';
+  try {
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+const localStorageAvailable = checkLocalStorageExists();
+
+const loadStorage = (key: string) => {
+  if (localStorageAvailable) {
+    return localStorage.getItem(key) || '';
+  }
+  return '';
+};
+
+const saveStorage = (key: string, data: string) => {
+  if (localStorageAvailable) {
+    localStorage.setItem(key, data);
+  }
+};
 
 interface IHandlers {
-  load: (key: string) => string;
-  save: (key: string, data: string) => void;
-  remove: (key: string) => void;
+  loadStorage: (key: string) => string;
+  saveStorage: (key: string, data: string) => void;
 }
 
 export const withStorage = (WrappedComponent: FC<IHandlers>) => {
   const WithStorage: FC = () => {
-    const checkLocalStorageExists = () => {
-      const testKey = 'test';
-      try {
-        localStorage.setItem(testKey, testKey);
-        localStorage.removeItem(testKey);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    };
-
-    const [localStorageAvailable] = useState(checkLocalStorageExists());
-
-    const load = (key: string) => {
-      if (localStorageAvailable) {
-        return localStorage.getItem(key) || '';
-      }
-      return '';
-    };
-
-    const save = (key: string, data: string) => {
-      if (localStorageAvailable) {
-        localStorage.setItem(key, data);
-      }
-    };
-
-    const remove = (key: string) => {
-      if (localStorageAvailable) {
-        localStorage.removeItem(key);
-      }
-    };
-
-    return <WrappedComponent {...{load, save, remove}} />;
+    return <WrappedComponent {...{loadStorage, saveStorage}} />;
   };
 
   return WithStorage;

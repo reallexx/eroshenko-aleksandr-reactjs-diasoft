@@ -130,7 +130,6 @@ export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready
       .then((registration) => {
-        // noinspection JSIgnoredPromiseFromCall
         registration.unregister();
       })
       .catch((error) => {

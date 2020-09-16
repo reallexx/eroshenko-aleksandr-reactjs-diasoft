@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {connect} from 'react-redux';
 import {addTodo} from '../actions/actions';
 import {InputText} from 'primereact/inputtext';
@@ -11,30 +11,32 @@ interface IHandlers {
 }
 
 const NewTodo: FC<IProps & IHandlers> = ({dispatch}) => {
-  let value = '';
+  const [text, setText] = useState('');
+  const [borderColor, setBorderColor] = useState('initial');
+  const inputStyle = {borderColor: borderColor};
 
   return (
     <form
       id="form"
       onReset={(e) => {
-        if (!value.trim()) {
-          // @ts-ignore
-          e.currentTarget[0].style.borderColor = 'red';
+        if (!text.trim()) {
+          setBorderColor('red');
           return;
         }
-        dispatch(addTodo(value));
-        value = '';
+        dispatch(addTodo(text));
+        setText('');
       }}>
       <div className="todo-list todo">
         <InputText
+          style={inputStyle}
           id="todo"
           placeholder="Новое дело"
           defaultValue=""
-          onFocus={(e) => {
-            e.currentTarget.style.borderColor = 'initial';
+          onFocus={() => {
+            setBorderColor('initial');
           }}
           onChange={(e) => {
-            value = e.currentTarget.value;
+            setText(e.currentTarget.value);
           }}
         />
         <p>
@@ -45,4 +47,6 @@ const NewTodo: FC<IProps & IHandlers> = ({dispatch}) => {
   );
 };
 
-export default connect()(NewTodo);
+const NewTodoConnected = connect()(NewTodo);
+
+export {NewTodoConnected as NewTodo};

@@ -1,40 +1,46 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 
 import {TodoItem} from './TodoItem';
-import NewTodo from './NewTodo';
-
+import {NewTodo} from './NewTodo';
 import {ITodo} from '../types/types';
+import {todoData} from '../todoData';
 
-interface IProps {
+export interface IProps {
   todos: ITodo[];
 }
 
-interface IHandlers {
+export interface IHandlers {
   toggleTodo: (id: number) => void;
   removeTodo: (id: number) => void;
-  load: (key: string, loadStorage: (key: string) => string) => string;
-  save: (key: string, data: ITodo[], saveFn: (key: string, data: string) => void) => void;
-  remove: (key: string, removeFn: (key: string) => void) => void;
+  load: (data: ITodo[]) => void;
+}
+
+export interface IStorageHandlers {
   loadStorage: (key: string) => string;
   saveStorage: (key: string, data: string) => void;
 }
 
-export const TodoList: FC<IProps & IHandlers> = ({
+export const TodoList: FC<IProps & IHandlers & IStorageHandlers> = ({
   todos,
   toggleTodo,
   removeTodo,
   load,
-  save,
   loadStorage,
   saveStorage,
 }) => {
-  if (!todos.length && loadStorage) {
-    load('todos', loadStorage);
-  }
-
-  if (todos.length && saveStorage) {
-    save('todos', todos, saveStorage);
-  }
+  useEffect(() => {
+    if (!todos.length && loadStorage) {
+      const data = JSON.parse(loadStorage('todos'));
+      if (data && Array.isArray(data) && data.length) {
+        load(data);
+      } else {
+        load(todoData);
+      }
+    }
+    if (todos.length && saveStorage) {
+      saveStorage('todos', JSON.stringify(todos));
+    }
+  });
 
   return (
     <div>

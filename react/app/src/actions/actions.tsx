@@ -20,21 +20,7 @@ export const setIsLoading = () => ({
   type: 'SET_IS_LOADING',
 });
 
-export const load = (key: string, fn: (key: string) => string) => ({
+export const load = (data: ITodo[]) => ({
   type: 'LOAD',
-  key,
-  fn,
-});
-
-export const save = (key: string, data: ITodo[], fn: (key: string, data: string) => void) => ({
-  type: 'SAVE',
-  key,
   data,
-  fn,
-});
-
-export const remove = (key: string, fn: (key: string) => void) => ({
-  type: 'REMOVE',
-  key,
-  fn,
 });

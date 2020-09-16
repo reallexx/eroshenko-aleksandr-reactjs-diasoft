@@ -30,12 +30,12 @@ export const TodoList: FC<IProps & IHandlers & IStorageHandlers> = ({
 }) => {
   useEffect(() => {
     if (!todos.length && loadStorage) {
-      const data = JSON.parse(loadStorage('todos'));
-      if (data && Array.isArray(data) && data.length) {
-        load(data);
-      } else {
-        load(todoData);
+      let data = todoData || [];
+      const storedData = loadStorage('todos') ? JSON.parse(loadStorage('todos')) : [];
+      if (storedData && Array.isArray(storedData) && storedData.length) {
+        data = storedData;
       }
+      load(data);
     }
     if (todos.length && saveStorage) {
       saveStorage('todos', JSON.stringify(todos));

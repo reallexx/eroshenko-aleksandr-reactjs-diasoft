@@ -6,6 +6,7 @@ export const todos = (
     type: string;
     id: number;
     caption: string;
+    date: string;
     data: ITodo[];
   },
 ) => {
@@ -17,6 +18,7 @@ export const todos = (
           id: action.id,
           caption: action.caption,
           done: false,
+          date: action.date,
         },
       ];
     case 'TOGGLE_TODO':

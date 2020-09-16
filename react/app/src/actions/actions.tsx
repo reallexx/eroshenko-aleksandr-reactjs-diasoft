@@ -4,6 +4,7 @@ export const addTodo = (caption: string) => ({
   type: 'ADD_TODO',
   id: Math.random(),
   caption,
+  date: new Date().toLocaleDateString(),
 });
 
 export const toggleTodo = (id: number) => ({

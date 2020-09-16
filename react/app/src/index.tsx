@@ -2,6 +2,8 @@ import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
+import {BrowserRouter as Router} from 'react-router-dom';
+
 import {reducers} from './reducers/reducers';
 import {App} from './App';
 
@@ -11,9 +13,11 @@ const store = createStore(reducers);
 
 render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root'),
 );

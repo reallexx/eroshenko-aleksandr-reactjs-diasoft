@@ -43,13 +43,22 @@ app.get("/", function (req, res) {
   res.send(data);
 });
 
+app.get("/:id", function (req, res) {
+  for (let index = 0; index < data.length; index++) {
+    const element = data[index];
+    if (element.id == req.params.id) {
+      res.send(element);
+      break;
+    }
+  }
+});
+
 app.post("/", function (req, res) {
   data.push(req.body);
   res.send(data);
 });
 
 app.put("/:id", function (req, res) {
-  console.log(req);
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     if (element.id == req.params.id) {
@@ -61,7 +70,6 @@ app.put("/:id", function (req, res) {
 });
 
 app.delete("/:id", function (req, res) {
-  console.log(req);
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     if (element.id == req.params.id) {

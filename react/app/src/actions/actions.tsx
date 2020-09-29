@@ -71,3 +71,15 @@ export const load = () => {
     }, 2000);
   };
 };
+
+export const getTodo = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    axios
+      .get(`${URL}${id}`)
+      .then((response) => {
+        dispatch({type: 'GET_TODO', data: response.data});
+      })
+      .catch(() => {})
+      .then(() => {});
+  };
+};

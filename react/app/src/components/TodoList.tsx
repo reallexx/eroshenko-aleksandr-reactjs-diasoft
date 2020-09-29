@@ -15,13 +15,7 @@ export interface IProps {
   todos: ITodo[];
 }
 
-export interface IHandlers {
-  toggleTodo: (id: number) => void;
-  removeTodo: (id: number) => void;
-  load: () => void;
-}
-
-const TodoList: FC<IProps & IHandlers> = ({isLoading = true, isError = false, todos = []}) => {
+const TodoList: FC<IProps> = ({isLoading = true, isError = false, todos = []}) => {
   const dispatch = useDispatch();
 
   let firstLook = useRef(true);

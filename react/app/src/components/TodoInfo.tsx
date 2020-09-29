@@ -1,35 +1,25 @@
-import React, {FC, useRef} from 'react';
+import React, {FC} from 'react';
 import {useLocation} from 'react-router-dom';
-import {withStorage} from '../components/WithStorage';
+import {useSelector} from 'react-redux';
 
-export interface IStorageHandlers {
-  loadStorage: (key: string) => string;
-  saveStorage: (key: string, data: string) => void;
+import {ITodo} from '../types/types';
+
+interface RootState {
+  todos: ITodo[];
 }
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-const Todo: FC<IStorageHandlers> = ({loadStorage}) => {
-  const id = useQuery().get('id') as string;
-  const getTodoData = (id: string) => {
-    if (loadStorage) {
-      const storedData = loadStorage('todos') ? JSON.parse(loadStorage('todos')) : [];
-      if (storedData && Array.isArray(storedData) && storedData.length) {
-        return storedData.filter((todo) => todo.id == id)[0];
-      }
-    }
-    return {};
-  };
-  let todo = useRef(getTodoData(id));
+export const TodoInfo: FC = () => {
+  const id = useQuery().get('id');
+  const todo = useSelector((state: RootState) => state.todos.filter((todo) => todo.id.toString() === id)[0]);
   return (
     <div>
       <div className="todo-list todo">
-        Вы хотели: {todo.current.caption} (добавлено {todo.current.date})
+        Вы хотели: {todo.caption} (добавлено {todo.date})
       </div>
     </div>
   );
 };
-
-export const TodoInfo = withStorage(Todo);

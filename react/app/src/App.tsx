@@ -4,7 +4,7 @@ import {Switch, Route, Redirect} from 'react-router-dom';
 import './App.scss';
 
 import {Header} from './components/Header';
-import {UserTodoList} from './containers/UserTodoList';
+import {TodoList} from './components/TodoList';
 import {TodoInfo} from './components/TodoInfo';
 
 export const App: FC = () => {
@@ -12,9 +12,9 @@ export const App: FC = () => {
     <div>
       <Header />
       <Switch>
-        <Route path="/home" component={UserTodoList} dispatch={() => false} isLoading />
+        <Route path="/home" component={TodoList} />
         <Route path="/todo" component={TodoInfo} />
-        <Redirect from='/' to='/home'/>
+        <Redirect from="/" to="/home" />
       </Switch>
     </div>
   );

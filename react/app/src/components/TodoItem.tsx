@@ -10,6 +10,10 @@ const doneStyle = {
   textDecoration: 'line-through',
 };
 
+const pointerStyle = {
+  cursor: 'pointer',
+};
+
 interface IProps {
   item: ITodo;
 }
@@ -27,9 +31,12 @@ export const TodoItem: FC<IProps & IHandlers> = (props) => {
     <div className="todo-item">
       <Checkbox className="check-box" checked={done} onChange={onChange} />
       <p>
-        <Link to={'/todo?id=' + id} style={done ? doneStyle : undefined} onDoubleClick={onDoubleClick}>
+        <Link to={'/todo?id=' + id} style={done ? doneStyle : undefined}>
           {caption}
         </Link>
+      </p>
+      <p style={pointerStyle} onClick={onDoubleClick}>
+        Х
       </p>
     </div>
   );

@@ -39,11 +39,11 @@ let data = [
   },
 ];
 
-app.get("/", function (req, res) {
+app.get("/api", function (req, res) {
   res.send(data);
 });
 
-app.get("/:id", function (req, res) {
+app.get("/api/:id", function (req, res) {
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     if (element.id == req.params.id) {
@@ -53,12 +53,16 @@ app.get("/:id", function (req, res) {
   }
 });
 
-app.post("/", function (req, res) {
+app.post("/api/", function (req, res) {
   data.push(req.body);
   res.send(data);
 });
 
-app.put("/:id", function (req, res) {
+app.put("/api/:id", function (req, res) {
+  if (req.params.id == 3) {
+    res.send({ Status: "ERROR" });
+    return;
+  }
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     if (element.id == req.params.id) {
@@ -66,10 +70,10 @@ app.put("/:id", function (req, res) {
       break;
     }
   }
-  res.send(data);
+  res.send({ Status: "OK", data: data });
 });
 
-app.delete("/:id", function (req, res) {
+app.delete("/api/:id", function (req, res) {
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     if (element.id == req.params.id) {

@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect} from 'react';
 import {connect, useDispatch} from 'react-redux';
 
 import {toggleTodo, removeTodo, load} from '../actions/actions';
@@ -18,13 +18,9 @@ export interface IProps {
 const TodoList: FC<IProps> = ({isLoading = true, isError = false, todos = []}) => {
   const dispatch = useDispatch();
 
-  let firstLook = useRef(true);
   useEffect(() => {
-    if (!todos.length && firstLook.current === true) {
-      dispatch(load());
-      firstLook.current = false;
-    }
-  });
+    dispatch(load());
+  }, []);
 
   return isLoading ? (
     <Loader />

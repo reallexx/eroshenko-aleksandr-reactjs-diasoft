@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {Checkbox} from 'primereact/checkbox';
 
 import {ITodo} from '../types/types';
+import {AppRoute} from '../App';
 
 const doneStyle = {
   fontStyle: 'italic',
@@ -31,7 +32,7 @@ export const TodoItem: FC<IProps & IHandlers> = (props) => {
     <div className="todo-item">
       <Checkbox className="check-box" checked={done} onChange={onChange} />
       <p>
-        <Link to={'/todo?id=' + id} style={done ? doneStyle : undefined}>
+        <Link to={AppRoute.TODO + '?id=' + id} style={done ? doneStyle : undefined}>
           {caption}
         </Link>
       </p>

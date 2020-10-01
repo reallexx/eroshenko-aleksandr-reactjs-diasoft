@@ -2,7 +2,7 @@ import {Dispatch} from 'redux';
 
 import axios from 'axios';
 
-const URL = 'http://localhost:3000/';
+const URL = 'http://localhost:3000/api/';
 
 export const addTodo = (caption: string) => {
   return async (dispatch: Dispatch) => {
@@ -18,8 +18,7 @@ export const addTodo = (caption: string) => {
       })
       .catch(() => {
         dispatch({type: 'SET_IS_ERROR', isError: true});
-      })
-      .then(() => {});
+      });
   };
 };
 
@@ -30,12 +29,22 @@ export const toggleTodo = (id: number) => {
         id: id,
       })
       .then((response) => {
-        dispatch({type: 'LOAD', data: response.data});
+        if (response.data.Status === 'OK') {
+          axios
+            .get(URL)
+            .then((response) => {
+              dispatch({type: 'LOAD', data: response.data});
+            })
+            .catch(() => {
+              dispatch({type: 'SET_IS_ERROR', isError: true});
+            });
+        } else {
+          dispatch({type: 'SET_IS_ERROR', isError: true});
+        }
       })
       .catch(() => {
         dispatch({type: 'SET_IS_ERROR', isError: true});
-      })
-      .then(() => {});
+      });
   };
 };
 
@@ -48,8 +57,7 @@ export const removeTodo = (id: number) => {
       })
       .catch(() => {
         dispatch({type: 'SET_IS_ERROR', isError: true});
-      })
-      .then(() => {});
+      });
   };
 };
 
@@ -74,12 +82,8 @@ export const load = () => {
 
 export const getTodo = (id: string) => {
   return async (dispatch: Dispatch) => {
-    axios
-      .get(`${URL}${id}`)
-      .then((response) => {
-        dispatch({type: 'GET_TODO', data: response.data});
-      })
-      .catch(() => {})
-      .then(() => {});
+    axios.get(`${URL}${id}`).then((response) => {
+      dispatch({type: 'GET_TODO', data: response.data});
+    });
   };
 };

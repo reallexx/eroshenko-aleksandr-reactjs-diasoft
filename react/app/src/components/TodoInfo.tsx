@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import {connect, useDispatch} from 'react-redux';
 
@@ -16,13 +16,11 @@ const useQuery = () => {
 const TodoInfo: FC<IProps> = ({todo = {}}) => {
   const dispatch = useDispatch();
   const id = useQuery().get('id') || '';
-  let firstLook = useRef(true);
+
   useEffect(() => {
-    if (firstLook.current === true) {
-      dispatch(getTodo(id));
-      firstLook.current = false;
-    }  
-  });
+    dispatch(getTodo(id));
+  }, []);
+
   return (
     <div>
       <div className="todo-list todo">
@@ -32,8 +30,8 @@ const TodoInfo: FC<IProps> = ({todo = {}}) => {
   );
 };
 
-const TodoInfoConnected = connect<{}, {}, {}, IProps>((state) => ({
-  todo: state.todo,
+const TodoInfoConnected = connect<{}, {}, {}, IProps>(({todo}) => ({
+  todo,
 }))(TodoInfo);
 
 export {TodoInfoConnected as TodoInfo};

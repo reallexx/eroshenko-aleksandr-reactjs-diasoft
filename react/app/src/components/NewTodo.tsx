@@ -1,16 +1,12 @@
 import React, {FC, useState} from 'react';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {addTodo} from '../actions/actions';
 import {InputText} from 'primereact/inputtext';
 import {Button} from 'primereact/button';
 
-interface IProps {}
+export const NewTodo: FC = () => {
+  const dispatch = useDispatch();
 
-interface IHandlers {
-  dispatch: (arg0: any) => void;
-}
-
-const NewTodo: FC<IProps & IHandlers> = ({dispatch}) => {
   const [text, setText] = useState('');
   const [borderColor, setBorderColor] = useState('initial');
   const inputStyle = {borderColor: borderColor};
@@ -46,7 +42,3 @@ const NewTodo: FC<IProps & IHandlers> = ({dispatch}) => {
     </form>
   );
 };
-
-const NewTodoConnected = connect()(NewTodo);
-
-export {NewTodoConnected as NewTodo};

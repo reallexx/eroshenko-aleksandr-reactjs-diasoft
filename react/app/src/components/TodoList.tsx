@@ -1,56 +1,40 @@
 import React, {FC, useEffect} from 'react';
+import {connect, useDispatch} from 'react-redux';
 
+import {toggleTodo, removeTodo, load} from '../actions/actions';
+
+import {Loader} from './Loader';
 import {TodoItem} from './TodoItem';
 import {NewTodo} from './NewTodo';
 import {ITodo} from '../types/types';
-import {todoData} from '../todoData';
+import {Error} from './Error';
 
 export interface IProps {
+  isLoading: boolean;
+  isError: boolean;
   todos: ITodo[];
 }
 
-export interface IHandlers {
-  toggleTodo: (id: number) => void;
-  removeTodo: (id: number) => void;
-  load: (data: ITodo[]) => void;
-}
+const TodoList: FC<IProps> = ({isLoading = true, isError = false, todos = []}) => {
+  const dispatch = useDispatch();
 
-export interface IStorageHandlers {
-  loadStorage: (key: string) => string;
-  saveStorage: (key: string, data: string) => void;
-}
-
-export const TodoList: FC<IProps & IHandlers & IStorageHandlers> = ({
-  todos,
-  toggleTodo,
-  removeTodo,
-  load,
-  loadStorage,
-  saveStorage,
-}) => {
   useEffect(() => {
-    if (!todos.length && loadStorage) {
-      const data = JSON.parse(loadStorage('todos'));
-      if (data && Array.isArray(data) && data.length) {
-        load(data);
-      } else {
-        load(todoData);
-      }
-    }
-    if (todos.length && saveStorage) {
-      saveStorage('todos', JSON.stringify(todos));
-    }
-  });
+    dispatch(load());
+  }, []);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : isError ? (
+    <Error />
+  ) : (
     <div>
       <div className="todo-list">
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
             item={todo}
-            onChange={() => toggleTodo(todo.id)}
-            onDoubleClick={() => removeTodo(todo.id)}
+            onChange={() => dispatch(toggleTodo(todo.id))}
+            onDoubleClick={() => dispatch(removeTodo(todo.id))}
           />
         ))}
       </div>
@@ -58,3 +42,11 @@ export const TodoList: FC<IProps & IHandlers & IStorageHandlers> = ({
     </div>
   );
 };
+
+const TodoListConnected = connect<{}, {}, {}, IProps>((state) => ({
+  isLoading: state.isLoading,
+  isError: state.isError,
+  todos: state.todos,
+}))(TodoList);
+
+export {TodoListConnected as TodoList};

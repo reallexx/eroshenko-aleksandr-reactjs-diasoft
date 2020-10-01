@@ -1,12 +1,18 @@
 import React, {FC} from 'react';
+import {Link} from 'react-router-dom';
 import {Checkbox} from 'primereact/checkbox';
 
 import {ITodo} from '../types/types';
+import {AppRoute} from '../App';
 
 const doneStyle = {
   fontStyle: 'italic',
   color: '#cdcdcd',
   textDecoration: 'line-through',
+};
+
+const pointerStyle = {
+  cursor: 'pointer',
 };
 
 interface IProps {
@@ -20,13 +26,18 @@ interface IHandlers {
 
 export const TodoItem: FC<IProps & IHandlers> = (props) => {
   const {item, onChange, onDoubleClick} = props;
-  const {done, caption} = item;
+  const {done, caption, id} = item;
 
   return (
     <div className="todo-item">
       <Checkbox className="check-box" checked={done} onChange={onChange} />
-      <p style={done ? doneStyle : undefined} onDoubleClick={onDoubleClick}>
-        {caption}
+      <p>
+        <Link to={AppRoute.TODO + '?id=' + id} style={done ? doneStyle : undefined}>
+          {caption}
+        </Link>
+      </p>
+      <p style={pointerStyle} onClick={onDoubleClick}>
+        Х
       </p>
     </div>
   );

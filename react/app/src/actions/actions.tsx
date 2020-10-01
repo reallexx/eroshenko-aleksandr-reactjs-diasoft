@@ -1,26 +1,89 @@
-import {ITodo} from '../types/types';
+import {Dispatch} from 'redux';
 
-export const addTodo = (caption: string) => ({
-  type: 'ADD_TODO',
-  id: Math.random(),
-  caption,
-});
+import axios from 'axios';
 
-export const toggleTodo = (id: number) => ({
-  type: 'TOGGLE_TODO',
-  id,
-});
+const URL = 'http://localhost:3000/api/';
 
-export const removeTodo = (id: number) => ({
-  type: 'REMOVE_TODO',
-  id,
-});
+export const addTodo = (caption: string) => {
+  return async (dispatch: Dispatch) => {
+    axios
+      .post(URL, {
+        id: Math.random(),
+        caption: caption,
+        done: false,
+        date: new Date().toLocaleDateString(),
+      })
+      .then((response) => {
+        dispatch({type: 'LOAD', data: response.data});
+      })
+      .catch(() => {
+        dispatch({type: 'SET_IS_ERROR', isError: true});
+      });
+  };
+};
 
-export const setIsLoading = () => ({
-  type: 'SET_IS_LOADING',
-});
+export const toggleTodo = (id: number) => {
+  return async (dispatch: Dispatch) => {
+    axios
+      .put(`${URL}${id}`, {
+        id: id,
+      })
+      .then((response) => {
+        if (response.data.Status === 'OK') {
+          axios
+            .get(URL)
+            .then((response) => {
+              dispatch({type: 'LOAD', data: response.data});
+            })
+            .catch(() => {
+              dispatch({type: 'SET_IS_ERROR', isError: true});
+            });
+        } else {
+          dispatch({type: 'SET_IS_ERROR', isError: true});
+        }
+      })
+      .catch(() => {
+        dispatch({type: 'SET_IS_ERROR', isError: true});
+      });
+  };
+};
 
-export const load = (data: ITodo[]) => ({
-  type: 'LOAD',
-  data,
-});
+export const removeTodo = (id: number) => {
+  return async (dispatch: Dispatch) => {
+    axios
+      .delete(`${URL}${id}`)
+      .then((response) => {
+        dispatch({type: 'LOAD', data: response.data});
+      })
+      .catch(() => {
+        dispatch({type: 'SET_IS_ERROR', isError: true});
+      });
+  };
+};
+
+export const load = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch({type: 'SET_IS_LOADING', isLoading: true});
+    setTimeout(() => {
+      axios
+        .get(URL)
+        .then((response) => {
+          dispatch({type: 'LOAD', data: response.data});
+        })
+        .catch(() => {
+          dispatch({type: 'SET_IS_ERROR', isError: true});
+        })
+        .then(() => {
+          dispatch({type: 'SET_IS_LOADING', isLoading: false});
+        });
+    }, 2000);
+  };
+};
+
+export const getTodo = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    axios.get(`${URL}${id}`).then((response) => {
+      dispatch({type: 'GET_TODO', data: response.data});
+    });
+  };
+};

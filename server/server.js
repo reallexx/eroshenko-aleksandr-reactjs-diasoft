@@ -40,7 +40,9 @@ let data = [
 ];
 
 app.get("/api", function (req, res) {
-  res.send(data);
+  setTimeout(function () {
+    res.send(data);
+  }, 2000);
 });
 
 app.get("/api/:id", function (req, res) {
@@ -48,7 +50,7 @@ app.get("/api/:id", function (req, res) {
     const element = data[index];
     if (element.id == req.params.id) {
       res.send(element);
-      break;
+      return;
     }
   }
 });
@@ -60,17 +62,17 @@ app.post("/api/", function (req, res) {
 
 app.put("/api/:id", function (req, res) {
   if (req.params.id == 3) {
-    res.send({ Status: "ERROR" });
+    res.status(500).send();
     return;
   }
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
     if (element.id == req.params.id) {
       element.done = !element.done;
-      break;
+      res.status(200).send(element);
+      return;
     }
   }
-  res.send({ Status: "OK", data: data });
 });
 
 app.delete("/api/:id", function (req, res) {
